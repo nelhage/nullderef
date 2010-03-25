@@ -39,7 +39,7 @@ static ssize_t null_call_write(struct file *f, const char __user *buf,
 	return ops->do_it();
 }
 
-static struct dentry *nullderef_root;
+static struct dentry *nullderef_root, *read_de, *call_de;
 
 static const struct file_operations null_read_fops = {
 	.write = null_read_write,
@@ -47,6 +47,12 @@ static const struct file_operations null_read_fops = {
 static const struct file_operations null_call_fops = {
 	.write = null_call_write,
 };
+
+static void cleanup_debugfs(void) {
+	if (read_de) debugfs_remove(read_de);
+	if (call_de) debugfs_remove(call_de);
+	if (nullderef_root) debugfs_remove(nullderef_root);
+}
 
 static int __init nullderef_init(void)
 {
@@ -68,14 +74,14 @@ static int __init nullderef_init(void)
 
 	return 0;
 out_err:
-	debugfs_remove_recursive(nullderef_root);
+	cleanup_debugfs();
 
 	return -ENODEV;
 }
 
 static void __exit nullderef_exit(void)
 {
-	debugfs_remove_recursive(nullderef_root);
+	cleanup_debugfs();
 }
 
 module_init(nullderef_init);
