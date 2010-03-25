@@ -56,8 +56,6 @@ static void cleanup_debugfs(void) {
 
 static int __init nullderef_init(void)
 {
-	static struct dentry *read_de, *call_de;
-
 	nullderef_root = debugfs_create_dir("nullderef", NULL);
 	if (!nullderef_root) {
 		printk(KERN_ERR "nullderef: creating root dir failed\n");
