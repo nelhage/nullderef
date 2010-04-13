@@ -23,7 +23,7 @@ And then simply
  # insmod nullderef.ko
 
 Once you're done crashing your kernel, if your machine is still
-stable, you can remove the module using:q
+stable, you can remove the module using:
  # rmmod nullderef
 
 You shuld now have a /sys/kernel/debug/nullderef/ directory,
