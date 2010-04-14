@@ -13,23 +13,17 @@ file.
 
 USING
 
-nullderef uses debugfs to export its hooks. In order to you use it,
-you'll need mount debugfs somewhere. /sys/kernel/debug is traditional,
-so try (as root):
-
- # mount debugfs -t debugfs /sys/kernel/debug/
-
-And then simply
+nullderef uses sysfs to export its hooks. Simply
  # insmod nullderef.ko
+
+You shuld now have a /sys/module/nullderef/parameters/ directory,
+containing two files, "read", and "call".
+
+Reading from either of these files will result in a NULL pointer
+dereference in the kernel. "read" will simply try to read a NULL
+pointer. "call" will read a function pointer from the NULL address,
+and then attempt to call through the resulting pointer.
 
 Once you're done crashing your kernel, if your machine is still
 stable, you can remove the module using:
  # rmmod nullderef
-
-You shuld now have a /sys/kernel/debug/nullderef/ directory,
-containing two files, "null_read", and "null_call".
-
-Writing to either of these files will result in a NULL pointer
-dereference in the kernel. "null_read" will simply try to read a NULL
-pointer. "null_call" will read a function pointer from the NULL
-address, and then attempt to call through the resulting pointer.

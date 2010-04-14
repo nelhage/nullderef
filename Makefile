@@ -1,6 +1,6 @@
 obj-m = nullderef.o
 
-M=$(shell pwd)
-
-all:
-	make -C /lib/modules/$(shell uname -r)/build/ M=$(M) modules
+nullderef.ko: nullderef.c
+	$(MAKE) -C '/lib/modules/$(shell uname -r)/source' \
+		O='/lib/modules/$(shell uname -r)/build/' \
+		"M=$$PWD" modules
